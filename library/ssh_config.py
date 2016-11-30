@@ -696,7 +696,7 @@ def change_host(options, **kwargs):
 def main():
     module = AnsibleModule(
         argument_spec=dict(
-	        ssh_config_file=dict(default=None, type='str'),
+	    ssh_config_file=dict(default=None, type='str'),
             state=dict(default='present', choices=['present', 'absent']),
             host=dict(required=True, type='str'),
             hostname=dict(type='str'),
