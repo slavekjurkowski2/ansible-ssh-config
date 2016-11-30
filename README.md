@@ -34,6 +34,12 @@ cases of adding, changing and removing hosts from your config file.
               identity_file=id_rsa.internal-lib port=222 state=present
 - name: Remove old-internal-lib.github.com from ssh config
   ssh_config: host=old-internal-lib.github.com state=absent
+
+# Or if using a custom ssh config. One use case for this would be when using openssh7.3+ which supports the Include directive to include all files within a specified directory 
+
+- name: Add internal-lib.github.com to custom ssh config
+  ssh_config: host=internal-lib.github.com hostname=github.com
+              ssh_config_file=/path/to/ssh/config.d/custom_config_file identity_file=id_rsa.internal-lib port=222 state=present
 ```
 
 For the full set of options please look at the top of the module file.

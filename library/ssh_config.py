@@ -696,6 +696,7 @@ def change_host(options, **kwargs):
 def main():
     module = AnsibleModule(
         argument_spec=dict(
+	        ssh_config_file=dict(default=None, type='str'),
             state=dict(default='present', choices=['present', 'absent']),
             host=dict(required=True, type='str'),
             hostname=dict(type='str'),
@@ -715,6 +716,8 @@ def main():
 
     user = module.params.get('user')
     host = module.params.get('host')
+    ssh_config_file = module.params.get('ssh_config_file')
+
     args = dict(
         hostname=module.params.get('hostname'),
         port=module.params.get('port'),
@@ -734,9 +737,12 @@ def main():
         config_file = '/etc/ssh/ssh_config'
         user = 'root'
     else:
-        config_file = os.path.join(
-            os.path.expanduser('~{0}'.format(user)), '.ssh', 'config'
-        )
+	if ssh_config_file is None:
+        	config_file = os.path.join(
+            	os.path.expanduser('~{0}'.format(user)), '.ssh', 'config'
+        	)
+	else:
+		config_file = module.params.get('ssh_config_file')
 
     # See if the identity file exists or not, relative to the config file
     if os.path.exists(config_file) and args['identity_file']:
